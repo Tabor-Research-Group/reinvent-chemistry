@@ -4,6 +4,7 @@ package.json
 .vscode
 tags
 .idea
+.DS_Store
 
 dist
 build

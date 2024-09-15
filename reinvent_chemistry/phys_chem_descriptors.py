@@ -2,6 +2,7 @@ from rdkit.Chem import GetDistanceMatrix
 from rdkit.Chem.Crippen import MolLogP
 from rdkit.Chem.Descriptors import MolWt
 from rdkit.Chem.Lipinski import NumHAcceptors, NumHDonors, NumRotatableBonds
+from rdkit.Chem import MolFromSmarts
 
 import numpy as np
 from rdkit.Chem.MolSurf import TPSA
@@ -38,6 +39,10 @@ class PhysChemDescriptors:
     def number_of_rotatable_bonds(self, mol) -> int:
         return NumRotatableBonds(mol)
 
+    def consecutive_rotatable_bonds(self, mol) -> int:
+        consec_rot_bond_smarts = MolFromSmarts("[!$(*#*)&!X1]-&!@[*;!$([CX3](=[OX1])[NX2]);!$([CX3](=[OX1])[OX2])]-&!@[!$(*#*)&!X1]")
+        return int(not mol.HasSubstructMatch(consec_rot_bond_smarts)) 
+    
     def slog_p(self, mol) -> float:
         return MolLogP(mol)
 
